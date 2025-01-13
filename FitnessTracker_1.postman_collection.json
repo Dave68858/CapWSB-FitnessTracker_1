@@ -1,0 +1,206 @@
+{
+	"info": {
+		"_postman_id": "16154f5f-2ade-40d0-98cc-4c703c2999a5",
+		"name": "Fit Kolekcja",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "38898361"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "Dave68858",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:1111/v1/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Dave68858 - simple",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:1111/v1/users/simple"
+					},
+					"response": []
+				},
+				{
+					"name": "Identyfikator użytkownika - ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:1111/v1/users/6"
+					},
+					"response": []
+				},
+				{
+					"name": "Stworzenie użytkownika",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\": \"Dawid\",\r\n    \"lastName\": \"Koman\",\r\n    \"birthdate\": \"1993-06-20\",\r\n    \"email\": \"Dave68858@wp.pl\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:1111/v1/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Weryfikacja danych użytkownika",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Paweł\",\n    \"lastName\": \"Badyl\",\n    \"birthdate\": \"1999-07-28\",\n    \"email\": \"Pawel@wp.pl\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:1111/v1/users/18"
+					},
+					"response": []
+				},
+				{
+					"name": "Usuwanie użytkownika",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "http://localhost:1111/v1/users/18"
+					},
+					"response": []
+				},
+				{
+					"name": "Szukaj użytkownika po adresie e-mail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1111/v1/users/email?email=domain",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1111",
+							"path": [
+								"v1",
+								"users",
+								"email"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "domain"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Szukaj użytkownika po adresie email (stary)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "http://localhost:1410/v1/users/older/2000-09-04"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "training",
+			"item": [
+				{
+					"name": "Wszystkie możliwe Treningi",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseURL}}/training"
+					},
+					"response": []
+				},
+				{
+					"name": "Tylko treningi po ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseURL}}/training/5"
+					},
+					"response": []
+				},
+				{
+					"name": "Treningi zakończone po określonej dacie",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseURL}}/training/finished/2025-04-28"
+					},
+					"response": []
+				},
+				{
+					"name": "Trening po aktywności",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseURL}}/training/activityType?activityType=CYCLING",
+							"host": [
+								"{{BaseURL}}"
+							],
+							"path": [
+								"training",
+								"activityType"
+							],
+							"query": [
+								{
+									"key": "activityType",
+									"value": "CYCLING"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Tworzenie treningu",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{BaseURL}}/training/11"
+					},
+					"response": []
+				},
+				{
+					"name": "Zaktualizowanie treningu",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "{{BaseURL}}/training/11"
+					},
+					"response": []
+				},
+				{
+					"name": "Nowe żądanie",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{BaseURL}}/training/11"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
