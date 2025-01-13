@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "mail",
+      "type": "com.capgemini.wsb.fitnesstracker.mail.internal.MailProperties",
+      "sourceType": "com.capgemini.wsb.fitnesstracker.mail.internal.MailProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "mail.from",
+      "type": "java.lang.String",
+      "sourceType": "com.capgemini.wsb.fitnesstracker.mail.internal.MailProperties"
+    }
+  ],
+  "hints": []
+}
