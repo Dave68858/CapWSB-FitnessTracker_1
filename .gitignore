@@ -10,7 +10,7 @@ target/
 .idea/libraries/
 *.iws
 *.iml
-*.ipr
+*.ipr 
 
 ### Eclipse ###
 .apt_generated
