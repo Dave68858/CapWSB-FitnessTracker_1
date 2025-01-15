@@ -6,6 +6,16 @@ import jakarta.annotation.Nullable;
 
 import java.util.Date;
 
+/**
+
+ * @param id 
+ * @param user 
+ * @param startTime 
+ * @param endTime 
+ * @param activityType 
+ * @param distance 
+ * @param averageSpeed 
+ */
 public record TrainingDto(
         @Nullable Long id,
         UserDto user,
@@ -14,6 +24,5 @@ public record TrainingDto(
         ActivityType activityType,
         double distance,
         double averageSpeed
-){
-
+) {
 }

@@ -14,7 +14,8 @@ public class TrainingMapper {
     private final UserProvider userProvider;
 
     TrainingDto toDto(Training training) {
-        return new TrainingDto(training.getId(),
+        return new TrainingDto(
+                training.getId(),
                 userMapper.toDto(training.getUser()),
                 training.getStartTime(),
                 training.getEndTime(),

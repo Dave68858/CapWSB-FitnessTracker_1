@@ -14,4 +14,3 @@ class UserSimpleMapper {
         return new User(userDto.firstName(), userDto.lastName(), null, null);
     }
 }
-

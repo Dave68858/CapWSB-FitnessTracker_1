@@ -4,6 +4,15 @@ import java.util.Date;
 import com.capgemini.wsb.fitnesstracker.user.api.UserDto;
 import io.micrometer.common.lang.Nullable;
 
+/**
+ * @param id 
+ * @param user 
+ * @param startTime 
+ * @param endTime 
+ * @param activityType 
+ * @param distance 
+ * @param averageSpeed 
+ */
 public record TrainingDto(
         @Nullable Long id,
         UserDto user,
@@ -13,6 +22,4 @@ public record TrainingDto(
         double distance,
         double averageSpeed
 ) {
-    // Nie są wymagane żadne dodatkowe metody ani pola
 }
-

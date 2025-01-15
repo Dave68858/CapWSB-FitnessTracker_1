@@ -1,10 +1,12 @@
 package com.capgemini.wsb.fitnesstracker.training.api;
+
 import com.capgemini.wsb.fitnesstracker.training.internal.ActivityType;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+
 
 @Entity
 @Table(name = "trainings")
@@ -19,7 +21,7 @@ public class Training {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(name = "start_time", nullable = false)
@@ -38,6 +40,15 @@ public class Training {
     @Column(name = "average_speed")
     private double averageSpeed;
 
+    /**
+     
+     * @param user 
+     * @param startTime 
+     * @param endTime 
+     * @param activityType
+     * @param distance 
+     * @param averageSpeed 
+     */
     public Training(
             final User user,
             final Date startTime,

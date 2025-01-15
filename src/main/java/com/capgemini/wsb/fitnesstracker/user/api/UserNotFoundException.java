@@ -10,7 +10,6 @@ public class UserNotFoundException extends NotFoundException {
     }
 
     public UserNotFoundException(Long id) {
-        this("Użytkownik o ID=%s nie został odnaleziony".formatted(id));
+        this(String.format("User with ID=%d was not found", id));
     }
-
 }

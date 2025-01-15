@@ -3,17 +3,22 @@ package com.capgemini.wsb.fitnesstracker.training.api;
 import com.capgemini.wsb.fitnesstracker.exception.api.NotFoundException;
 
 /**
- * Wyjątek wskazujący {@link Training} został nieodnaleziony.
+ @link Training
  */
 @SuppressWarnings("squid:S110")
 public class TrainingNotFoundException extends NotFoundException {
 
+    /**
+     * @param message 
+     */
     private TrainingNotFoundException(String message) {
         super(message);
     }
 
+    /**
+     * @param id 
+     */
     public TrainingNotFoundException(Long id) {
-        this("Trening o danym ID nie został odnaleziony".formatted(id));
+        this(String.format("Training with ID %d was not found", id));
     }
-
 }

@@ -34,7 +34,7 @@ class TrainingController {
     }
 
     @GetMapping("/finished/{afterTime}")
-    public List<TrainingDto> getFinishedTrainings(@PathVariable ("afterTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date afterTime) {
+    public List<TrainingDto> getFinishedTrainings(@PathVariable("afterTime") @DateTimeFormat(pattern = "yyyy-MM-dd") Date afterTime) {
         return trainingService.findFinishedTrainings(afterTime)
                 .stream()
                 .map(trainingMapper::toDto)
@@ -42,40 +42,10 @@ class TrainingController {
     }
 
     @GetMapping("/activityType")
-    public List<TrainingDto> getTrainingsByActivityType(@RequestParam ("activityType") ActivityType activityType) {
+    public List<TrainingDto> getTrainingsByActivityType(@RequestParam("activityType") ActivityType activityType) {
         return trainingService.findTrainingsByActivityType(activityType)
                 .stream()
                 .map(trainingMapper::toDto)
                 .toList();
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public TrainingDto createTraining(@RequestBody TrainingDtoWithUserId trainingDto) {
-        Training training = trainingMapper.toEntity(trainingDto);
-        Training savedTraining = trainingService.createTraining(training);
-        return trainingMapper.toDto(savedTraining);
-    }
-
-    @PutMapping("/{id}")
-    public TrainingDto updateTraining(@PathVariable Long id, @RequestBody TrainingDtoWithUserId trainingDto) {
-        Training updatedTraining = trainingService.updateTraining(id, trainingMapper.toEntity(trainingDto));
-        return trainingMapper.toDto(updatedTraining);
-    }
-
-    @PatchMapping("/{id}")
-    public TrainingDto partiallyUpdateTraining(
-            @PathVariable Long id,
-            @RequestBody Map<String, Object> updates) {
-
-        Training updatedTraining = trainingService.partiallyUpdateTraining(id, updates);
-        return trainingMapper.toDto(updatedTraining);
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> deleteTraining(@PathVariable Long id) {
-        trainingService.deleteTraining(id);
-        return ResponseEntity.noContent().build();
     }
 }

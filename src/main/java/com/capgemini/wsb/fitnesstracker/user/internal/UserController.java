@@ -47,67 +47,35 @@ class UserController {
                           .toList();
     }
 
-    @GetMapping("/{userId}")
-    public UserDto getUser(@PathVariable Long userId) {
-        return userService.getUser(userId)
-                          .map(userMapper::toDto)
-                          .orElseThrow(() -> new IllegalArgumentException("Użytkownik z ID: " + userId + " nieodnaleziony"));
-    }
-
     @GetMapping("/email")
-    public List<UserEmailSimpleDto> getUserByEmail(@RequestParam String email) {
-        return userService.getUserByEmailIgnoreCase(email)
-                            .stream()
-                            .map(userEmailSimpleMapper::toEmailSimpleDto)
-                            .toList();
+    public List<UserEmailSimpleDto> getAllUsersEmail() {
+        return userService.findAllUsers()
+                          .stream()
+                          .map(userEmailSimpleMapper::toEmailSimpleDto)
+                          .toList();
     }
 
-    @GetMapping("/older/{time}")
-    public List<UserDto> getUsersOlderThan(@PathVariable LocalDate time) {
-        return userService.getUsersOlderThan(time)
-                          .stream()
-                          .map(userMapper::toDto)
-                          .toList();
+    @GetMapping("/{id}")
+    public UserDto getUserById(@PathVariable Long id) {
+        return userMapper.toDto(userService.findUserById(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User addUser(@RequestBody UserDto userDto) throws InterruptedException {
-        return handleUserOperation(() -> {
-            User user = userMapper.toEntity(userDto);
-            userService.createUser(user);
-            return user;
-        }, "Brak możliwości dodania użytkownika z adresem email: " + userDto.email());
+    public UserDto createUser(@RequestBody UserDto userDto) {
+        User user = userMapper.toEntity(userDto);
+        return userMapper.toDto(userService.createUser(user));
     }
 
-    @PutMapping("/{userId}")
-    public User updateUser(@PathVariable Long userId, @RequestBody UserDto userDto) {
-        return handleUserOperation(() -> {
-            User foundUser = userService.getUser(userId).orElseThrow(() -> new IllegalArgumentException("User with ID: " + userId + " not found"));
-            User updatedUser = userMapper.toUpdateEntity(userDto, foundUser);
-            return userService.updateUser(updatedUser);
-        }, "Brak możliwości aktualizacji użytkownika o ID: " + userId);
+    @PutMapping("/{id}")
+    public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
+        User user = userMapper.toEntity(userDto);
+        return userMapper.toDto(userService.updateUser(id, user));
     }
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable Long userId) {
-        handleUserOperation(() -> {
-            userService.deleteUser(userId);
-            return null;
-        }, "Brak możliwości usunięcia użytkownika o ID: " + userId);
-    }
-
-    private <T> T handleUserOperation(UserOperation<T> operation, String errorMessage) {
-        try {
-            return operation.execute();
-        } catch (Exception e) {
-            throw new IllegalArgumentException(errorMessage + " z błędem: " + e.getMessage());
-        }
-    }
-
-    @FunctionalInterface
-    private interface UserOperation<T> {
-        T execute() throws Exception;
+    public void deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
     }
 }

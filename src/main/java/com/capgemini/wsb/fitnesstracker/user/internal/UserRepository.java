@@ -12,22 +12,9 @@ import com.capgemini.wsb.fitnesstracker.user.api.User;
 @Repository
 interface UserRepository extends JpaRepository<User, Long> {
 
-    default Optional<User> findByEmail(String email) {
-        return findAll().stream()
-                        .filter(user -> Objects.equals(user.getEmail(), email))
-                        .findFirst();
-    }
+    Optional<User> findByEmail(String email);
 
-    default List<User> findByEmailFragmentIgnoreCase(String emailFragment) {
-        return findAll().stream()
-                        .filter(user -> user.getEmail().toLowerCase().contains(emailFragment.toLowerCase()))
-                        .toList();
-    }
+    List<User> findByEmailFragmentIgnoreCase(String emailFragment);
 
-    default List<User> findByBirthDateBefore(LocalDate date) {
-        return findAll().stream()
-                        .filter(user -> user.getBirthdate().isBefore(date))
-                        .toList();
-    }
+    List<User> findByBirthDateBefore(LocalDate date);
 }
-

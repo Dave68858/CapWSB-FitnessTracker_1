@@ -23,8 +23,8 @@ public class TrainingServiceImpl implements TrainingService, TrainingProvider {
     private final TrainingRepository trainingRepository;
 
     @Override
-    public Optional<User> getTraining(final Long trainingId) {
-        throw new UnsupportedOperationException("Not finished yet");
+    public Optional<Training> getTraining(final Long trainingId) {
+        return trainingRepository.findById(trainingId);
     }
 
     @Override
@@ -54,64 +54,30 @@ public class TrainingServiceImpl implements TrainingService, TrainingProvider {
 
     @Override
     public Training createTraining(Training training) {
-        log.info("Creating training {}", training);
-        if (training.getId() != null) {
-            throw new IllegalArgumentException("Training id is already set");
-        }
         return trainingRepository.save(training);
     }
 
     @Override
-    public Training updateTraining(Long id, Training updatedTraining) {
-        Training existingTraining = trainingRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Trening nieznaleziony po ID: " + id));
-
-        if (updatedTraining.getStartTime() != null) {
-            existingTraining.setStartTime(updatedTraining.getStartTime());
+    public Training updateTraining(Long id, Training training) {
+        if (!trainingRepository.existsById(id)) {
+            throw new TrainingNotFoundException(id);
         }
-        if (updatedTraining.getEndTime() != null) {
-            existingTraining.setEndTime(updatedTraining.getEndTime());
-        }
-        if (updatedTraining.getActivityType() != null) {
-            existingTraining.setActivityType(updatedTraining.getActivityType());
-        }
-        if (updatedTraining.getDistance() != 0) {
-            existingTraining.setDistance(updatedTraining.getDistance());
-        }
-        if (updatedTraining.getAverageSpeed() != 0) {
-            existingTraining.setAverageSpeed(updatedTraining.getAverageSpeed());
-        }
-
-        return trainingRepository.save(existingTraining);
+        training.setId(id);
+        return trainingRepository.save(training);
     }
 
     @Override
     public Training partiallyUpdateTraining(Long id, Map<String, Object> updates) {
         Training training = trainingRepository.findById(id)
                 .orElseThrow(() -> new TrainingNotFoundException(id));
-
         updates.forEach((key, value) -> {
             switch (key) {
-                case "userId":
-                    training.setUser((User) value);
-                    break;
-                case "startTime":
-                    training.setStartTime((Date) value);
-                    break;
-                case "endTime":
-                    training.setEndTime((Date) value);
-                    break;
-                case "activityType":
-                    training.setActivityType(ActivityType.valueOf((String) value));
-                    break;
-                case "distance":
-                    training.setDistance((Double) value);
-                    break;
-                case "averageSpeed":
-                    training.setAverageSpeed((Double) value);
-                    break;
-                default:
-                    throw new IllegalArgumentException("Nieznane pole: " + key);
+                case "startTime" -> training.setStartTime((Date) value);
+                case "endTime" -> training.setEndTime((Date) value);
+                case "activityType" -> training.setActivityType((ActivityType) value);
+                case "distance" -> training.setDistance((Double) value);
+                case "averageSpeed" -> training.setAverageSpeed((Double) value);
+                default -> throw new IllegalArgumentException("Invalid field: " + key);
             }
         });
         return trainingRepository.save(training);
@@ -119,6 +85,9 @@ public class TrainingServiceImpl implements TrainingService, TrainingProvider {
 
     @Override
     public void deleteTraining(Long id) {
+        if (!trainingRepository.existsById(id)) {
+            throw new TrainingNotFoundException(id);
+        }
         trainingRepository.deleteById(id);
     }
 }

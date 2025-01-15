@@ -4,6 +4,13 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.annotation.Nullable;
 
+/**
+ * @param id 
+ * @param firstName 
+ * @param lastName 
+ * @param birthdate 
+ * @param email 
+ */
 public record UserDto(
         @Nullable Long id,
         String firstName,
@@ -11,7 +18,4 @@ public record UserDto(
         @JsonFormat(pattern = "yyyy-MM-dd") LocalDate birthdate,
         String email
 ) {
-    // Nie są wymagane żadne dodatkowe metody ani pola
-
 }
-

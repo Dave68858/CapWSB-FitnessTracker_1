@@ -3,6 +3,15 @@ package com.capgemini.wsb.fitnesstracker.training.internal;
 import java.util.Date;
 import io.micrometer.common.lang.Nullable;
 
+/**
+ * @param id 
+ * @param userId 
+ * @param startTime 
+ * @param endTime 
+ * @param activityType 
+ * @param distance 
+ * @param averageSpeed 
+ */
 public record TrainingDtoWithUserId(
         @Nullable Long id,
         Long userId,
@@ -12,6 +21,4 @@ public record TrainingDtoWithUserId(
         double distance,
         double averageSpeed
 ) {
-    // Nie są wymagane żadne dodatkowe metody czy pola
 }
-
