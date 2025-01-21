@@ -14,57 +14,95 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-class UserServiceImpl implements UserService, UserProvider {
+public class UserServiceImpl implements UserService, UserProvider {
 
     private final UserRepository userRepository;
 
+    /**
+     * Create a new User
+     *
+     * @param user User
+     */
     @Override
     public User createUser(final User user) {
-        log.info("Creating user {}", user);
+        log.info("Creating User {}", user);
         if (user.getId() != null) {
-            throw new IllegalArgumentException("User already has an ID, update is not allowed!");
+            throw new IllegalArgumentException("User has already DB ID, update is not permitted!");
         }
         return userRepository.save(user);
     }
 
+    /**
+     * Update an existing User
+     * @param user User
+     * @return User
+     */
     @Override
-    public User updateUser(final Long id, final User user) {
-        log.info("Updating user {}", user);
-        if (!userRepository.existsById(id)) {
-            throw new IllegalArgumentException("User with ID " + id + " does not exist, creation is not allowed!");
+    public User updateUser(final User user) {
+        log.info("Updating User {}", user);
+        if (user.getId() == null) {
+            throw new IllegalArgumentException("User has no DB ID, create is not permitted!");
         }
-        user.setId(id);
         return userRepository.save(user);
     }
 
+    /**
+     * Delete an existing User
+     * @param userId Long
+     */
     @Override
     public void deleteUser(final Long userId) {
-        log.info("Deleting user with ID {}", userId);
+        log.info("Deleting User with ID {}", userId);
         userRepository.deleteById(userId);
     }
 
+    /**
+     * Get a User by ID
+     * @param userId id of the user to be searched
+     * @return An {@link Optional} containing the located User, or {@link Optional#empty()} if not found
+     */
     @Override
     public Optional<User> getUser(final Long userId) {
         return userRepository.findById(userId);
     }
 
+    /**
+     * Get all Users older than a given date
+     * @param date LocalDate
+     * @return List of Users
+     */
+    @Override
+    public List<User> getUsersOlderThan(LocalDate date) {
+        return userRepository.findByBirthDateBefore(date);
+    }
+
+    /**
+     * Get a User by email
+     * @param email String
+     * @return An {@link Optional} containing the located User, or {@link Optional#empty()} if not found
+     */
+    @Override
+    public Optional<User> getUserByEmail(final String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    /**
+     * Get a User by email ignoring case
+     * @param email String
+     * @return List of Users
+     */
+    @Override
+    public List<User> getUserByEmailIgnoreCase(final String email) {
+        return userRepository.findByEmailFragmentIgnoreCase(email);
+    }
+
+    /**
+     * Get all Users
+     * @return List of Users
+     */
     @Override
     public List<User> findAllUsers() {
         return userRepository.findAll();
     }
 
-    @Override
-    public Optional<User> findUserByEmail(String email) {
-        return userRepository.findByEmail(email);
-    }
-
-    @Override
-    public List<User> findUsersByEmailFragment(String emailFragment) {
-        return userRepository.findByEmailFragmentIgnoreCase(emailFragment);
-    }
-
-    @Override
-    public List<User> findUsersByBirthDateBefore(LocalDate date) {
-        return userRepository.findByBirthDateBefore(date);
-    }
 }

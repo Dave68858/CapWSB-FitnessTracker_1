@@ -1,6 +1,7 @@
 package com.capgemini.wsb.fitnesstracker.user.api;
 
 import java.time.LocalDate;
+
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -32,7 +32,7 @@ public class NotificationService {
     private final UserProvider userProvider;
     private final String reportString = "Monthly report";
 
-    @Scheduled(cron = "0 0 9 1 * *")
+    @Scheduled(cron = "0 0 9 1 * *") // Raport zaplanowany na każdy dzień miesiąca na godzinę 9
     public void generateReportAndSendMail() {
         log.info("Cron scheduling report generation");
         List<User> allUsers = userProvider.findAllUsers();
@@ -41,15 +41,17 @@ public class NotificationService {
 
         for (User user : allUsers) {
             List<Training> recentTrainings = getRecentTrainings(user, oneMonthAgo);
-            
+            // Przetwarzenie oraz wysyłanie wiadomości
         }
     }
 
     private List<Training> getRecentTrainings(User user, LocalDateTime oneMonthAgo) {
-        Date oneMonthAgoDate = Date.from(oneMonthAgo.atZone(ZoneId.systemDefault()).toInstant());
-        return trainingProvider.findTrainingByUser(user.getId())
-                .stream()
-                .filter(training -> training.getEndTime().after(oneMonthAgoDate))
+        return trainingProvider.findTrainingByUser(user.getId()).stream()
+                .filter(training -> toLocalDateTime(training.getStartTime()).isAfter(oneMonthAgo))
                 .collect(Collectors.toList());
+    }
+
+    private LocalDateTime toLocalDateTime(Date date) {
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 }
