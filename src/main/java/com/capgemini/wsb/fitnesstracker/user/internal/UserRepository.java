@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.capgemini.wsb.fitnesstracker.user.api.User;
 
 @Repository
-interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     default Optional<User> findByEmail(String email) {
         return findAll().stream()
@@ -29,5 +29,8 @@ interface UserRepository extends JpaRepository<User, Long> {
                         .filter(user -> user.getBirthdate().isBefore(date))
                         .toList();
     }
+    List<User> findByFirstNameIgnoreCase(String firstName);
+    
+    long count();
+    
 }
-
